@@ -1,6 +1,8 @@
+@import '../../style/utils/mixins.scss';
+
 .header {
-    background-color: var(--color-gray-700);
     &__top {
+        background-color: var(--color-gray-700);
         padding: .7rem 5%;
         display: flex;
         align-items: center;
@@ -19,9 +21,11 @@
 
         div {
             button {
-                
+                @include btn;
+
                 :last-child {
                     margin-left: 1rem;
+                    background-color: red;
                 }
             }
         }
@@ -30,6 +34,7 @@
     }
 
     &__bottom {
+        background-color: var(--color-gray-800);
         padding: 0 5%;
         display: flex;
         align-items: center;
@@ -37,7 +42,7 @@
         > button {
             height: 4rem;
             width: 4rem;
-            background-color: var(--color-gray-600);
+            background-color: var(--color-gray-700);
             border: 0;
             color: var(--color-gray-light);
             margin-right: 2rem;
@@ -53,20 +58,30 @@
             input {
                 font-size: 1.2rem;
                 border: 0;
-                background-color: var(--color-gray-700);
+                background-color: var(--color-gray-800);
                 color: var(--color-gray-light);
                 border-bottom: 1px solid var(--color-gray-light);
                 padding: 0 0 .2rem;
                 outline: none;
-
-                :focus {
-                }
             }
 
         }
         &_action {
             margin-left: auto;
             
+            button:first-child {
+                height: 4rem;
+                width: 4rem;
+                background-color: var(--color-gray-800);
+                border: 0;
+                color: var(--color-gray-light);
+                margin-right: 1rem;
+            }
+
+            button:last-child {
+                @include btn;
+                background-color: var(--color-cyan-400);
+            }
         }
     }
 }

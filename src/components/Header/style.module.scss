@@ -1,0 +1,72 @@
+.header {
+    background-color: var(--color-gray-700);
+    &__top {
+        padding: .7rem 5%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        h2 {
+            font-family: 'JetBrains Mono', monospace;
+            letter-spacing: 3px;
+        }
+
+        a {
+            color: var(--color-cyan-200);
+            font-weight: 600;
+            text-decoration: underline;
+        }
+
+        div {
+            button {
+                
+                :last-child {
+                    margin-left: 1rem;
+                }
+            }
+        }
+
+        border-bottom: 1px solid var(--color-gray-light);
+    }
+
+    &__bottom {
+        padding: 0 5%;
+        display: flex;
+        align-items: center;
+
+        > button {
+            height: 4rem;
+            width: 4rem;
+            background-color: var(--color-gray-600);
+            border: 0;
+            color: var(--color-gray-light);
+            margin-right: 2rem;
+        }
+
+        &_name {
+            span {
+                display: block;
+                margin-bottom: .5rem;
+                font-size: .9rem;
+            }
+
+            input {
+                font-size: 1.2rem;
+                border: 0;
+                background-color: var(--color-gray-700);
+                color: var(--color-gray-light);
+                border-bottom: 1px solid var(--color-gray-light);
+                padding: 0 0 .2rem;
+                outline: none;
+
+                :focus {
+                }
+            }
+
+        }
+        &_action {
+            margin-left: auto;
+            
+        }
+    }
+}

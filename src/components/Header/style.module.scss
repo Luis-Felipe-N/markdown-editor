@@ -1,48 +1,16 @@
 @import '../../style/utils/mixins.scss';
 
 .header {
-    &__top {
-        background-color: var(--color-gray-700);
-        padding: .7rem 5%;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-
-        h2 {
-            font-family: 'JetBrains Mono', monospace;
-            letter-spacing: 3px;
-        }
-
-        a {
-            color: var(--color-cyan-200);
-            font-weight: 600;
-            text-decoration: underline;
-        }
-
-        div {
-            button {
-                @include btn;
-
-                :last-child {
-                    margin-left: 1rem;
-                    background-color: red;
-                }
-            }
-        }
-
-        border-bottom: 1px solid var(--color-gray-light);
-    }
-
     &__bottom {
-        background-color: var(--color-gray-800);
-        padding: 0 5%;
+        background-color: var(--color-gray-700);
+        padding: 0 5% 0 0;
         display: flex;
         align-items: center;
 
         > button {
             height: 4rem;
             width: 4rem;
-            background-color: var(--color-gray-700);
+            background-color: var(--color-gray-600);
             border: 0;
             color: var(--color-gray-light);
             margin-right: 2rem;
@@ -51,14 +19,15 @@
         &_name {
             span {
                 display: block;
-                margin-bottom: .5rem;
+                margin-bottom: .1rem;
                 font-size: .9rem;
+                color: var(--color-gray-400);
             }
 
             input {
                 font-size: 1.2rem;
                 border: 0;
-                background-color: var(--color-gray-800);
+                background-color: var(--color-gray-700);
                 color: var(--color-gray-light);
                 border-bottom: 1px solid var(--color-gray-light);
                 padding: 0 0 .2rem;
@@ -68,11 +37,13 @@
         }
         &_action {
             margin-left: auto;
+            display: flex;
+            align-items: center;
             
             button:first-child {
                 height: 4rem;
                 width: 4rem;
-                background-color: var(--color-gray-800);
+                background-color: var(--color-gray-700);
                 border: 0;
                 color: var(--color-gray-light);
                 margin-right: 1rem;
@@ -81,6 +52,8 @@
             button:last-child {
                 @include btn;
                 background-color: var(--color-cyan-400);
+                font-size: 1rem;
+                color: var(--color-gray-light);
             }
         }
     }

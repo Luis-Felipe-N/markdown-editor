@@ -1,8 +1,9 @@
-import { TextareaHTMLAttributes, useEffect, useRef } from 'react'
+import { TextareaHTMLAttributes, useEffect, useRef, useState } from 'react'
 import { Preview } from '../Preview';
 import style from './style.module.scss'
 
 export function Editor() {
+    const [ textAreaValue, setTextAreaValue ] = useState('# Olá, mundo!')
     const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
     useEffect(() => {
@@ -17,10 +18,12 @@ export function Editor() {
                 </div>
                 <textarea
                     ref={textAreaRef}
+                    value={textAreaValue}
+                    onChange={(e) => {setTextAreaValue(e.target.value)}}
                 />
             </section>
             
-            <Preview />
+            <Preview text={textAreaValue} />
         </main>
     )
 }

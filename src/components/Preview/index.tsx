@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { DOMElement, ReactElement, ReactNode, useEffect, useState } from 'react';
 import { markdown } from '../../style/utils/convertMarkdow';
 import style from './style.module.scss'
 
@@ -7,20 +7,21 @@ interface IPreviewProps {
 }
 
 export function Preview({text}: IPreviewProps) {
-    const [ htmlPreview, setHtmlPreview ] = useState<String>();
+    const [ htmlPreview, setHtmlPreview ] = useState('<h1>oi</h1>');
 
     useEffect(() => {
         const tempHtmlPreview = markdown(text)
+
         setHtmlPreview(tempHtmlPreview)
+        console.log(htmlPreview)
     }, [text])
 
     return (
         <section className={style.preview}>
-            <div>
+            <div className={style.preview__header}>
                 <h2>PREVIEW</h2>
             </div>
-            <div>
-                { htmlPreview }
+            <div className={style.preview__main} dangerouslySetInnerHTML={{__html: htmlPreview}}>  
             </div>
         </section>
     )

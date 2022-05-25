@@ -1,4 +1,6 @@
-export function markdown(src: String) {
+import { DOMElement } from "react";
+
+export function markdown(src: String): any {
 
     var rx_lt = /</g;
     var rx_gt = />/g;
@@ -119,5 +121,5 @@ export function markdown(src: String) {
     // stash
     replace(rx_stash, function(all: string) { return stash[parseInt(all)] });
 
-    return src.trim();
+    return src;
 };

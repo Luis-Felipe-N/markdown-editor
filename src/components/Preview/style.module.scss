@@ -1,10 +1,10 @@
 .preview {
     flex: 1;
     border-left: 2px solid var(--color-gray-400);
-
-    > div {
+    &__header {
         padding: .5rem .9rem;
         background-color: var(--color-gray-800);
+
 
         h1 {
             font-weight: 500;
@@ -13,5 +13,9 @@
             font-size: .9rem;
             color: var(--color-gray-400);
         }
+    }
+
+    &__main {
+        padding: 1rem;
     }
 }

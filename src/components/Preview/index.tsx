@@ -13,7 +13,6 @@ export function Preview({text}: IPreviewProps) {
         const tempHtmlPreview = markdown(text)
 
         setHtmlPreview(tempHtmlPreview)
-        console.log(htmlPreview)
     }, [text])
 
     return (

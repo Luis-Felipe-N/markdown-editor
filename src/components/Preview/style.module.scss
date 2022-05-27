@@ -1,21 +1,55 @@
 .preview {
     flex: 1;
     border-left: 2px solid var(--color-gray-400);
+    font-family: 'JetBrains Mono', monospace;
+    
     &__header {
         padding: .5rem .9rem;
         background-color: var(--color-gray-800);
-
+        
 
         h1 {
             font-weight: 500;
 
-            font-family: 'JetBrains Mono', monospace;
             font-size: .9rem;
             color: var(--color-gray-400);
         }
     }
-
+    
     &__main {
+        overflow: auto;
+        height: 87vh;
         padding: 1rem;
+
+        *:not(hr) {
+            padding: .5rem 0;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        ul, ol {
+            margin-left: 4rem;
+        }
+        
+        a {
+            color: var(--color-cyan-400);
+            text-decoration: underline;
+        }
+
+        pre {
+            padding: 1rem;
+            border-radius: 5px;
+            background-color: var(--color-gray-800);
+            line-height: 1.7;
+            margin: .5rem 0 1rem;
+        }
+
+        img {
+            display: block;
+            max-width: 100%;
+            width: 100%;
+        }
     }
 }

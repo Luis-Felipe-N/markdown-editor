@@ -16,6 +16,10 @@
     }
 }
 
+html {
+    overflow: hidden;
+}
+
 :root {
     --color-gray-light: #eaeaea; 
     --color-gray-400: #A0AEC0;
@@ -62,4 +66,9 @@ body {
     font-family: 'Inter', sans-serif;
     // font-family: 'Open Sans', sans-serif;
     // font-family: 'Roboto', sans-serif;
+}
+
+::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
 }

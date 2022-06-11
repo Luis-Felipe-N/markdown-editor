@@ -1,0 +1,52 @@
+@import '../../style/utils/mixins.scss';
+
+.sidebar {
+    padding: 1rem;
+    background-color: var(--color-gray-800);
+    position: relative;
+    width: 305px;
+
+    > div {
+        overflow: hidden;
+
+        button {
+            @include btn;
+            width: 100%;
+            margin: 1rem 0;
+            background-color: var(--color-primary-400);
+        }
+
+
+        ul {
+            list-style: none;
+
+            li {
+                display: flex;
+                align-items: center;
+                gap: .5rem;
+            }
+            span {
+                color: var(--color-gray-400);
+            }
+        }
+    }
+
+    .btnOpen {
+        @include btn;
+        position: absolute;
+        top: 0;
+        right: 0;
+        transform: translateX(100%);
+        height: 4rem;
+        width: 4rem;
+        background-color: var(--color-gray-600);
+        color: var(--white);
+    }
+
+    
+}
+
+.sidebar.close {
+    padding: 0;
+    width: 0;
+}

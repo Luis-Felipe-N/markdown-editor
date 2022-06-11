@@ -17,6 +17,10 @@
             padding: 1rem;
             overflow: auto;
             height: 87vh;
+
+            &:focus {
+                box-shadow: none;
+            }
         }
 
         > div {

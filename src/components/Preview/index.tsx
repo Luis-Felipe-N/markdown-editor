@@ -1,4 +1,4 @@
-import { DOMElement, ReactElement, ReactNode, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { markdown } from '../../style/utils/convertMarkdow';
 import style from './style.module.scss'
 
@@ -7,7 +7,7 @@ interface IPreviewProps {
 }
 
 export function Preview({text}: IPreviewProps) {
-    const [ htmlPreview, setHtmlPreview ] = useState('<h1>oi</h1>');
+    const [ htmlPreview, setHtmlPreview ] = useState('');
 
     useEffect(() => {
         const tempHtmlPreview = markdown(text)

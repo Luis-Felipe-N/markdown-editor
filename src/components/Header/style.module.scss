@@ -1,60 +1,58 @@
 @import '../../style/utils/mixins.scss';
 
 .header {
-    &__bottom {
-        background-color: var(--color-gray-700);
-        padding: 0 5% 0 0;
+    background-color: var(--color-gray-700);
+    padding: 0 1rem;
+    display: flex;
+    align-items: center;
+    height: 4rem;
+    gap: 1rem;
+    width: calc(100% - 4rem);
+    margin-left: auto;
+
+    > h2 {
+        font-family: 'JetBrains Mono', monospace;
+        letter-spacing: 4px;
+    }
+    .documentName {
         display: flex;
         align-items: center;
+        padding-left: 1rem;
+        gap: .5rem;
 
-        > button {
-            height: 4rem;
-            width: 4rem;
-            background-color: var(--color-gray-600);
+        border-left: 1px solid var(--color-gray-400);
+        input {
             border: 0;
-            color: var(--color-gray-light);
-            margin-right: 2rem;
+            background-color: transparent;
+            border-radius: 5px;
+            color: var(--white);
+            font-weight: 600;
+            padding: .2rem;
+        }
+    }
+
+    .btns {
+        flex: 1;
+        display: flex;
+        justify-content: end;
+        gap: 1rem;
+
+        button {
+            border: 0;
+            outline: 0;
+            padding: .5rem 1rem;
+            border-radius: 5px;
+            background-color: var(--color-primary-400);
+            color: var(--white);
+            font-weight: 600;
+            font-size: .9rem;
         }
 
-        &_name {
-            span {
-                display: block;
-                margin-bottom: .1rem;
-                font-size: .9rem;
-                color: var(--color-gray-400);
-            }
-
-            input {
-                font-size: 1.2rem;
-                border: 0;
-                background-color: var(--color-gray-700);
-                color: var(--color-gray-light);
-                border-bottom: 1px solid var(--color-gray-light);
-                padding: 0 0 .2rem;
-                outline: none;
-            }
-
-        }
-        &_action {
-            margin-left: auto;
+        .btnSave {
+            padding: .5rem 1rem;
             display: flex;
             align-items: center;
-            
-            button:first-child {
-                height: 4rem;
-                width: 4rem;
-                background-color: var(--color-gray-700);
-                border: 0;
-                color: var(--color-gray-light);
-                margin-right: 1rem;
-            }
-
-            button:last-child {
-                @include btn;
-                background-color: var(--color-cyan-400);
-                font-size: 1rem;
-                color: var(--color-gray-light);
-            }
+            gap: .5rem;
         }
     }
 }

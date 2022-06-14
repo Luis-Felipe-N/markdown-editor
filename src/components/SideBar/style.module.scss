@@ -24,9 +24,22 @@
                 display: flex;
                 align-items: center;
                 gap: .5rem;
+                transition: .2s;
+                padding: .5rem;
+                border-radius: 5px;
             }
+
+            li:hover {
+                background-color: var(--color-gray-700);
+            }
+
             span {
                 color: var(--color-gray-400);
+                font-size: .875rem
+            }
+
+            *:focus {
+                box-shadow: none;
             }
         }
     }

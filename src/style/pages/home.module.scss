@@ -3,5 +3,9 @@
 
     main {
         flex: 1;
+
+        .wrapper {
+            display: flex;
+        }
     }
 }

@@ -1,12 +1,19 @@
-import { useEffect, useRef } from 'react'
+import { useContext, useEffect, useRef } from 'react'
+import { FileContext } from '../../context/FileContext';
 import style from './style.module.scss'
 
-export function Editor({file, changeContentFile}: any) {
+export function Editor() {
     const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
-    useEffect(() => {
-        textAreaRef.current?.focus()
-    }, [textAreaRef])
+    const { file, saveChange, changeContentFile } = useContext(FileContext);
+
+    function handleUpdateTextArea(value: string) {
+        changeContentFile({content: value})
+    }
+
+    // useEffect(() => {
+    //     textAreaRef.current?.focus()
+    // }, [textAreaRef])
 
     return (
         <main className={style.editor}>
@@ -15,9 +22,9 @@ export function Editor({file, changeContentFile}: any) {
                     <h2>MARKDOWN</h2>
                 </div>
                 <textarea
-                    ref={textAreaRef}
-                    value={file && file.content}
-                    // onChange={(e) => {changeContentFile(e.target.value)}}
+                    // ref={textAreaRef}
+                    onChange={(e) => {handleUpdateTextArea(e.target.value)}}
+                    value={file?.content}
                 />
             </section>
             

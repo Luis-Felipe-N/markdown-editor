@@ -11,13 +11,13 @@ export function Header() {
 
   const { user, signIn } = useContext(AuthContext);
   const { file, saveChange, changeContentFile } = useContext(FileContext);
+  const { id }  = useParams()
 
   function handleChangedocumentName(input: HTMLInputElement) {
     changeContentFile({name: input.value})
   }
 
   function handleSaveChanges() {
-    const {id} = useParams()
     if (user != null && id !== undefined) {
       saveChange(id)
     } else {

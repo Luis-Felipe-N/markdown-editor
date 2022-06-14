@@ -5,6 +5,7 @@ import { AuthContext } from '../../context/AuthContext'
 import { FileContext } from '../../context/FileContext'
 
 import { createDoc } from '../../services/firebase'
+import { formatDate } from '../../ultils/formatDate'
 import style from './style.module.scss'
 
 interface IFile {
@@ -46,9 +47,9 @@ export function SideBar() {
                     {files && files.map(file => (
                         <Link to={`/${file.id}`}  key={file.id}>
                             <li>
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7 18H17V16H7V18Z" fill="currentColor" /><path d="M17 14H7V12H17V14Z" fill="currentColor" /><path d="M7 10H11V8H7V10Z" fill="currentColor" /><path fillRule="evenodd" clipRule="evenodd" d="M6 2C4.34315 2 3 3.34315 3 5V19C3 20.6569 4.34315 22 6 22H18C19.6569 22 21 20.6569 21 19V9C21 5.13401 17.866 2 14 2H6ZM6 4H13V9H19V19C19 19.5523 18.5523 20 18 20H6C5.44772 20 5 19.5523 5 19V5C5 4.44772 5.44772 4 6 4ZM15 4.10002C16.6113 4.4271 17.9413 5.52906 18.584 7H15V4.10002Z" fill="currentColor" /></svg>
+                            <svg width="14" height="16" xmlns="http://www.w3.org/2000/svg"><path d="M13.107 3.393c.167.167.31.393.429.678.119.286.178.548.178.786v10.286c0 .238-.083.44-.25.607a.827.827 0 0 1-.607.25h-12a.827.827 0 0 1-.607-.25.827.827 0 0 1-.25-.607V.857C0 .62.083.417.25.25A.827.827 0 0 1 .857 0h8c.238 0 .5.06.786.179.286.119.512.261.678.428l2.786 2.786ZM9.143 1.214v3.357H12.5c-.06-.172-.125-.294-.196-.366L9.509 1.411c-.072-.072-.194-.137-.366-.197Zm3.428 13.643V5.714H8.857a.827.827 0 0 1-.607-.25.827.827 0 0 1-.25-.607V1.143H1.143v13.714H12.57Z" fill="#FFF"></path></svg>
                                 <div>
-                                    <span>Hoje</span>
+                                    <span>{ file?.created_at &&  formatDate( file.created_at) }</span>
                                     <p>{ file?.name }</p>
                                 </div>
                             </li>

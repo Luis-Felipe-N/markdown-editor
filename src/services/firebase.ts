@@ -16,15 +16,12 @@ interface IFile {
 }
 
 export function createDoc(userId: string): void {
-
-    const fileId = uuidV4()
-    const data = new Date()
-
+    let date = new Date()
     const docListref = ref(db, userId + '/files')
     const docFilesRef = push(docListref)
     set(docFilesRef, {
         name: 'sem_nome',
-        upload_at: data,
+        created_at: date.toString(),
         content: '',
         create_by: userId
     })
@@ -35,7 +32,7 @@ export function getAllFiles(userId: string, setFiles: any) {
     const filesRef = ref(db, userId + '/files')
 
     onValue(filesRef, (snapshot) => {
-        const data: IFile = snapshot.val()
+        const data: IFile[] = snapshot.val()
         
         const files = Object.entries(
             data || {}).map( ([key, { name, created_at, content } ]) => {
@@ -61,6 +58,7 @@ interface ISaveDocChanges {
 }
 
 export function saveDocChanges({file, fileId, userId}: ISaveDocChanges) {
+    console.log(file)
     const filesRef = ref(db, userId + '/files/' + fileId)
     update(filesRef, file)
 }

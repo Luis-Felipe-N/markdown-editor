@@ -5,3 +5,9 @@
     border-radius: 2px;
     color: var(--white);
 }
+
+@mixin focus {
+    &:focus {
+        box-shadow: 0 0 0 2px var(--color-gray-900), 0 0 0 4px var(--color-primary-400);
+    }
+}

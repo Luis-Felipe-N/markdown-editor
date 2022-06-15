@@ -8,12 +8,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@types/react-modal": "^3.13.1",
     "@types/uuid": "^8.3.4",
     "date-fns": "^2.28.0",
     "firebase": "^9.8.3",
     "node-sass": "^7.0.1",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
+    "react-modal": "^3.15.1",
     "react-router-dom": "^6.3.0",
     "sass": "^1.51.0",
     "uuid": "^8.3.2"

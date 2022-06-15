@@ -4,24 +4,24 @@ import { AuthContext } from "../../context/AuthContext";
 import { FileContext } from "../../context/FileContext";
 import style from "./style.module.scss";
 
-// import { ReactComponent as Logo } from '../../assets/fileIcon.svg'
+interface IHeaderProps {
+  onToggleLoginMenu: () => void;
+}
 
-export function Header() {
-  // const [documentName, setDocumentName] = useState("welcome.md");
-
-  const { user, signIn } = useContext(AuthContext);
+export function Header({ onToggleLoginMenu }: IHeaderProps) {
+  const { user } = useContext(AuthContext);
   const { file, saveChange, changeContentFile } = useContext(FileContext);
-  const { id }  = useParams()
+  const { id } = useParams();
 
   function handleChangedocumentName(input: HTMLInputElement) {
-    changeContentFile({name: input.value})
+    changeContentFile({ name: input.value });
   }
 
   function handleSaveChanges() {
     if (user != null && id !== undefined) {
-      saveChange(id)
+      saveChange(id);
     } else {
-      signIn();
+      onToggleLoginMenu();
     }
   }
 
@@ -56,11 +56,21 @@ export function Header() {
         </div>
 
         <div className={style.btns}>
-            <div> 
-                {user && (
-                    <h2>{ user.name }</h2>
-                )}
-            </div>
+          {user && (
+            <button className={style.user}>
+              <>
+                <img
+                  src={
+                    user.avatar
+                      ? user.avatar
+                      : "https://doodleipsum.com/600?shape=circle&bg=ceebff"
+                  }
+                  alt=""
+                />
+                <h3>{user.name}</h3>
+              </>
+            </button>
+          )}
           <button>
             <svg
               width="24"

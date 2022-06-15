@@ -5,20 +5,18 @@ import { AuthContext } from '../../context/AuthContext'
 import { FileContext } from '../../context/FileContext'
 
 import { createDoc } from '../../services/firebase'
+import { createDocLocal } from '../../services/localStorage'
 import { formatDate } from '../../ultils/formatDate'
 import style from './style.module.scss'
 
-interface IFile {
-    name: string,
-    created_at: Date,
-    content: string,
-    id: string
-}
+interface ISideBarrops {
+    onToggleLoginMenu: () => void;
+}  
 
-export function SideBar() {
+export function SideBar({ onToggleLoginMenu }: ISideBarrops) {
     const [ sideBarIsClose, setSideBarIsClose ] = useState(false)
 
-    const { user, signIn } = useContext(AuthContext)
+    const { user } = useContext(AuthContext)
     const { files } = useContext(FileContext)
 
 
@@ -28,9 +26,13 @@ export function SideBar() {
 
     function handleCreateNewDoc() {
         if (user) {
-            createDoc(user.uid)
+            if (!user.isUserLocal) {
+                createDoc(user.uid)
+            } else {
+                createDocLocal(user.uid)
+            }
         } else {
-            signIn()
+            onToggleLoginMenu()
         }
     }
 

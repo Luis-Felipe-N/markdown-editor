@@ -1,19 +1,20 @@
-import { useEffect, useState } from 'react';
-import { markdown } from '../../style/utils/convertMarkdow';
+import { useContext, useEffect, useState } from 'react';
+import { FileContext } from '../../context/FileContext';
+import { markdown } from '../../utils/convertMarkdow';
 import style from './style.module.scss'
 
-interface IPreviewProps {
-    text: String;
-}
 
-export function Preview({text}: IPreviewProps) {
+export function Preview() {
     const [ htmlPreview, setHtmlPreview ] = useState('');
 
-    useEffect(() => {
-        const tempHtmlPreview = markdown(text)
+    const { file } = useContext(FileContext);
 
-        setHtmlPreview(tempHtmlPreview)
-    }, [text])
+    useEffect(() => {
+        if(file?.content) {
+            const tempHtmlPreview = markdown(file.content)
+            setHtmlPreview(tempHtmlPreview)
+        }
+    }, [file?.content])
 
     return (
         <section className={style.preview}>

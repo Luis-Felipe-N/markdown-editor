@@ -11,10 +11,6 @@ export function Editor() {
         changeContentFile({content: value})
     }
 
-    // useEffect(() => {
-    //     textAreaRef.current?.focus()
-    // }, [textAreaRef])
-
     return (
         <main className={style.editor}>
             <section className={style.editor__markdown}>

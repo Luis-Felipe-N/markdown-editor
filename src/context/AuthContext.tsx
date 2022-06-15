@@ -1,12 +1,15 @@
-import { GoogleAuthProvider, OAuthCredential } from "firebase/auth";
 import { createContext, ReactNode, useEffect, useState } from "react";
+import { v4 as uuidV4 } from 'uuid'
+
+import { GoogleAuthProvider } from "firebase/auth";
 import { auth, provider, signInWithPopup } from '../libs/firebase'
 
 type User = {
   uid: string,
   email: string | null,
   avatar: string | null,
-  name: string | null
+  name: string | null,
+  isUserLocal: boolean;
 };
 
 interface IAuthContextProviderProps {
@@ -16,7 +19,7 @@ interface IAuthContextProviderProps {
 interface IAuthContextType {
   user: User | undefined;
   signIn: () => void;
-  // signUp: () => void;
+  createUserLocal: (username: string, avatar: string | null) => void
 };
 
 
@@ -32,50 +35,54 @@ export function AuthContextProvider(props: IAuthContextProviderProps) {
             uid: snapUser.uid,
             email: snapUser.email,
             avatar: snapUser.photoURL,
-            name: snapUser.displayName
+            name: snapUser.displayName,
+            isUserLocal: false
         }
         setUser(tempUser)
+      }
+      else {
+        // Verificar se tem no storage
+        const tempUser = localStorage.getItem('user')
+
+        if ( tempUser ) {
+          const parseUser = JSON.parse(tempUser)
+          setUser(parseUser)
+        }
       }
     })
   }, [])
 
   async function signIn() {
     const result = await signInWithPopup(auth, provider)
-
-    
-    const credential = GoogleAuthProvider.credentialFromResult(result)
     
     const tempUser: User = {
       uid: result.user.uid,
       email: result.user.email,
       avatar: result.user.photoURL,
-      name: result.user.displayName
+      name: result.user.displayName,
+      isUserLocal: false
     }
     setUser(tempUser)
+  }
 
-    // signInWithPopup(auth, provider)
-    // .then((result) => {
-    //   // This gives you a Google Access Token. You can use it to access the Google API.
-    //   const credential: OAuthCredential | null = GoogleAuthProvider.credentialFromResult(result);
-    //   // const token = credential.accessToken;
-    //   // The signed-in user info.
-    //   const user = result.user;
-    //   // ...
-    // }).catch((error) => {
-    //   // Handle Errors here.
-    //   const errorCode = error.code;
-    //   const errorMessage = error.message;
-    //   // The email of the user's account used.
-    //   const email = error.customData.email;
-    //   // The AuthCredential type that was used.
-    //   const credential = GoogleAuthProvider.credentialFromError(error);
-    //   // ...
-    //   console.log(errorMessage)
-    // });
+  function createUserLocal(username: string, avatar: string | null) {
+    const tempUser: User = {
+      name: username,
+      avatar: avatar,
+      uid: uuidV4(),
+      email: null,
+      isUserLocal: true
+    }
+
+    // Amarzenar no storage
+
+    localStorage.setItem('user', JSON.stringify(tempUser))
+
+    setUser(tempUser)
   }
 
   return (
-    <AuthContext.Provider value={{ user, signIn }}>
+    <AuthContext.Provider value={{ user, signIn, createUserLocal }}>
       {props.children}
     </AuthContext.Provider>
   );

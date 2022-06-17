@@ -19,7 +19,7 @@ export function SideBar({ onToggleLoginMenu }: ISideBarrops) {
     const navigate = useNavigate()
 
     const { user } = useContext(AuthContext)
-    const { files } = useContext(FileContext)
+    const { files, createNewDoc } = useContext(FileContext)
 
     function handleCloseSideBar() {
         setSideBarIsClose( currentState => !currentState)
@@ -27,15 +27,7 @@ export function SideBar({ onToggleLoginMenu }: ISideBarrops) {
 
     function handleCreateNewDoc() {
         if (user) {
-            if (!user.isUserLocal) {
-                const newFile = createDoc(user.uid)
-                // navigate(newFile.id, { replace: true });
-            } else {
-                const event = new Event('storage')
-                const newFile = createDocLocal(user.uid)
-                // navigate(newFile.id, { replace: true });
-                window.dispatchEvent(event)
-            }
+            createNewDoc()
         } else {
             onToggleLoginMenu()
         }

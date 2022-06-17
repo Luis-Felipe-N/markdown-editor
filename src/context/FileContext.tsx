@@ -1,7 +1,6 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { getAllFiles, saveDocChanges } from "../services/firebase";
-import { getAllFilesLocal, saveDocChangesLocal } from "../services/localStorage";
+import { getAllFiles, saveDocChanges, deleteDoc, createDoc } from "../services/firebase";
+import { createDocLocal, deleteDocLocal, getAllFilesLocal, saveDocChangesLocal } from "../services/localStorage";
 import { IFile } from "../types/File";
 import { AuthContext } from "./AuthContext";
 
@@ -44,13 +43,14 @@ interface IFileContextProviderProps {
 }
 
 interface IFileContext {
-    file: IFile;
-    files: IFile[];
-    setFiles:  React.Dispatch<React.SetStateAction<IFile[]>>;
-    setNewFile: (fileId: string | undefined) => void;
-    saveChange: (fileId: string) => void;
-    changeContentFile: (prop: any) => void;
-    deleteDoc: (fileId: string) => void;
+    file: IFile,
+    files: IFile[],
+    setFiles:  React.Dispatch<React.SetStateAction<IFile[]>>,
+    setNewFile: (fileId: string | undefined) => void,
+    createNewDoc: () => void;
+    saveChange: (fileId: string) => void,
+    changeContentFile: (prop: any) => void,
+    deleteCurrentDoc: (fileId: string) => void,
 }
 
 export const FileContext = createContext({} as IFileContext)
@@ -88,7 +88,22 @@ export function FileContextProvider(props: IFileContextProviderProps) {
             const fileFilted = files.filter(file => file.id === fileId)[0]
             setFile(fileFilted)
         } else {
-            setFile(welcomeFile)
+            if(!user?.uid) {
+                setFile(welcomeFile)
+            }
+        }
+    }
+
+    function createNewDoc() {
+        if( user ) {
+        if (!user.isUserLocal) {    
+            createDoc(user.uid)
+            
+        } else {
+            const event = new Event('storage')
+            createDocLocal(user.uid)
+            window.dispatchEvent(event)
+        }
         }
     }
 
@@ -104,8 +119,15 @@ export function FileContextProvider(props: IFileContextProviderProps) {
         }
     }
 
-    function deleteDoc(fileId: string) {
-
+    function deleteCurrentDoc(fileId: string) {
+        if (user) {
+            if (!user.isUserLocal) {
+                deleteDoc(fileId, user.uid)
+            } else {
+                console.log('deletando do local')
+                deleteDocLocal(fileId)
+            }
+        }
     }
 
     return (
@@ -114,9 +136,10 @@ export function FileContextProvider(props: IFileContextProviderProps) {
                 file, 
                 files, 
                 setFiles, 
-                setNewFile, 
+                setNewFile,
+                createNewDoc,
                 saveChange, 
-                deleteDoc, 
+                deleteCurrentDoc, 
                 changeContentFile}
         }>
             {props.children}

@@ -84,6 +84,7 @@ export function AuthContextProvider(props: IAuthContextProviderProps) {
   function logOut() {
     if (user?.isUserLocal) {
       localStorage.removeItem("user");
+      localStorage.removeItem("files");
       setUser(undefined);
     } else {
       signOut(auth);

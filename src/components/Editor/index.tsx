@@ -12,19 +12,15 @@ export function Editor() {
     }
 
     return (
-        <main className={style.editor}>
-            <section className={style.editor__markdown}>
+        <section className={style.editor}>
+            
                 <div>
                     <h2>MARKDOWN</h2>
                 </div>
                 <textarea
-                    // ref={textAreaRef}
                     onChange={(e) => {handleUpdateTextArea(e.target.value)}}
                     value={file?.content}
-                />
-            </section>
-            
-            
-        </main>
+                />         
+        </section>
     )
 }

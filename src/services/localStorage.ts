@@ -57,22 +57,30 @@ export function getAllFilesLocal(setFiles: any) {
 
 
 interface ISaveDocChangesLocal {
-    fileId: string;
-    ChangedFile: IFile;
+    fileId: string,
+    file: IFile,
 }
 
-export function saveDocChangesLocal({fileId, ChangedFile}: ISaveDocChangesLocal){
+export function saveDocChangesLocal({fileId, file}: ISaveDocChangesLocal){
     const files = localStorage.getItem('files')
 
     if (files!==null) {
         const parseFiles: IFile[] = JSON.parse(files)
-        parseFiles.map((file) => {
-            if (file.id = fileId) {
-                return ChangedFile
-            }
-        })
-
-        localStorage.setItem('files', JSON.stringify(parseFiles))
+        const changedFiles = parseFiles.map((fileM) => fileM.id === fileId ? file : fileM)
+        localStorage.setItem('files', JSON.stringify(changedFiles))
+        const event = new Event('storage')
+        window.dispatchEvent(event)
     }
 }
 
+export function deleteDocLocal(fileId: string) {
+    const files = localStorage.getItem('files')
+
+    if (files!==null) {
+        const parseFiles: IFile[] = JSON.parse(files)
+        const fileIndex = parseFiles.findIndex(file => file.id === fileId)
+        parseFiles.slice(fileIndex)
+        console.log(parseFiles)
+        localStorage.setItem('files', JSON.stringify(parseFiles))
+    }
+}

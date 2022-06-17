@@ -1,3 +1,5 @@
+@import '../utils/mixins.scss';
+
 .home {
     display: flex;
 
@@ -5,7 +7,32 @@
         flex: 1;
 
         .wrapper {
+            .btnToggleView {
+                @include btn;
+                position: absolute;
+                right: 0;
+                padding: 0.5rem 1rem;
+                background-color: transparent;
+                display: none;
+            }
             display: flex;
+        }
+    }
+}
+
+@media (max-width: 1000px) {
+    .wrapper {
+        .btnToggleView {
+            display: block !important;
+        }
+
+        &.previewOpen {
+            section:first-child {
+                display: none !important;
+            }
+            section:last-child {
+                display: block;
+            }
         }
     }
 }

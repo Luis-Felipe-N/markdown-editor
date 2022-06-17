@@ -14,7 +14,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         <Routes>
             <Route path="/" element={<App />}>
               {/* React */}
-              <Route path=":id" element={<Home />} />
+              <Route path=":fileId" element={<Home />} />
             </Route>
         </Routes>
       </BrowserRouter>

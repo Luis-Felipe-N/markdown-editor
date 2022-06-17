@@ -15,10 +15,8 @@ export function Header({ onToggleLoginMenu, redirectToFile }: IHeaderProps) {
   const [dropDownIsOpen, setDropDownIsOpen] = useState(false);
 
   const { user, logOut } = useContext(AuthContext);
-  const { file, saveChange, deleteCurrentDoc, changeContentFile } =
-    useContext(FileContext);
+  const { file, saveChange, deleteCurrentDoc, changeContentFile } = useContext(FileContext);
   const { fileId } = useParams();
-  const navigate = useNavigate();
 
   function handleChangedocumentName(text: string) {
     changeContentFile({ name: text });
@@ -87,7 +85,7 @@ export function Header({ onToggleLoginMenu, redirectToFile }: IHeaderProps) {
             <input
               type="text"
               onChange={(event) => handleChangedocumentName(event.target.value)}
-              value={file?.name}
+              value={file?.name ? file.name : ''}
             />
           </div>
         </div>

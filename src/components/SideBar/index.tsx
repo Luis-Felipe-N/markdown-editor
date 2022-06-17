@@ -65,8 +65,8 @@ export function SideBar({ onToggleLoginMenu, redirectToFile }: ISideBarrops) {
                 </header>
                 <ul>
                     {files && files.map(file => (
-                        <li>
-                                <Link to={`/${file.id}`}  key={file.id}>
+                        <li key={file.id} title={file.name}>
+                                <Link to={`/${file.id}`}>
                             <svg width="24" height="24"
                                 viewBox="0 0 24 24"
                                 fill="none"

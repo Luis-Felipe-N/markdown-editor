@@ -89,6 +89,8 @@ export function AuthContextProvider(props: IAuthContextProviderProps) {
     } else {
       signOut(auth);
     }
+
+    location.reload()
   }
 
   return (

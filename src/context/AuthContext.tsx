@@ -1,68 +1,71 @@
 import { createContext, ReactNode, useEffect, useState } from "react";
-import { v4 as uuidV4 } from 'uuid'
+import { v4 as uuidV4 } from "uuid";
 
-import { GoogleAuthProvider } from "firebase/auth";
-import { auth, provider, signInWithPopup } from '../libs/firebase'
+import { auth, provider, signInWithPopup, signOut } from "../libs/firebase";
+import { createDocLocal } from "../services/localStorage";
 
 type User = {
-  uid: string,
-  email: string | null,
-  avatar: string | null,
-  name: string | null,
+  uid: string;
+  email: string | null;
+  avatar: string | null;
+  name: string | null;
   isUserLocal: boolean;
 };
 
 interface IAuthContextProviderProps {
   children?: ReactNode | undefined;
-};
+}
 
 interface IAuthContextType {
   user: User | undefined;
-  signIn: () => void;
-  createUserLocal: (username: string, avatar: string | null) => void
-};
-
+  signIn: () => Promise<User | undefined>;
+  createUserLocal: (username: string, avatar: string | null) => void;
+  logOut: () => void;
+}
 
 export const AuthContext = createContext({} as IAuthContextType);
 
 export function AuthContextProvider(props: IAuthContextProviderProps) {
-  const [ user, setUser ] = useState<User>();
+  const [user, setUser] = useState<User>();
 
   useEffect(() => {
     auth.onAuthStateChanged((snapUser) => {
-      if (snapUser){
-        const tempUser: User = {
-            uid: snapUser.uid,
-            email: snapUser.email,
-            avatar: snapUser.photoURL,
-            name: snapUser.displayName,
-            isUserLocal: false
-        }
-        setUser(tempUser)
-      }
-      else {
-        // Verificar se tem no storage
-        const tempUser = localStorage.getItem('user')
+        if (snapUser) {
+            const tempUser: User = {
+                uid: snapUser.uid,
+                email: snapUser.email,
+                avatar: snapUser.photoURL,
+                name: snapUser.displayName,
+                isUserLocal: false,
+            };
+            setUser(tempUser);
+        } else {
+            // Verificar se tem no storage
+            const tempUser = localStorage.getItem("user");
 
-        if ( tempUser ) {
-          const parseUser = JSON.parse(tempUser)
-          setUser(parseUser)
+            if (tempUser) {
+                const parseUser = JSON.parse(tempUser);
+                setUser(parseUser);
+            } else {
+                setUser(undefined);
+            }
         }
-      }
-    })
-  }, [])
+    });
+  }, []);
 
   async function signIn() {
-    const result = await signInWithPopup(auth, provider)
-    
+    const result = await signInWithPopup(auth, provider);
+
     const tempUser: User = {
       uid: result.user.uid,
       email: result.user.email,
       avatar: result.user.photoURL,
       name: result.user.displayName,
-      isUserLocal: false
-    }
-    setUser(tempUser)
+      isUserLocal: false,
+    };
+    setUser(tempUser);
+
+    return user;
   }
 
   function createUserLocal(username: string, avatar: string | null) {
@@ -71,18 +74,24 @@ export function AuthContextProvider(props: IAuthContextProviderProps) {
       avatar: avatar,
       uid: uuidV4(),
       email: null,
-      isUserLocal: true
+      isUserLocal: true,
+    };
+
+    localStorage.setItem("user", JSON.stringify(tempUser));
+    setUser(tempUser);
+  }
+
+  function logOut() {
+    if (user?.isUserLocal) {
+      localStorage.removeItem("user");
+      setUser(undefined);
+    } else {
+      signOut(auth);
     }
-
-    // Amarzenar no storage
-
-    localStorage.setItem('user', JSON.stringify(tempUser))
-
-    setUser(tempUser)
   }
 
   return (
-    <AuthContext.Provider value={{ user, signIn, createUserLocal }}>
+    <AuthContext.Provider value={{ user, signIn, createUserLocal, logOut }}>
       {props.children}
     </AuthContext.Provider>
   );

@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { Editor } from "../components/Editor";
 import { Header } from "../components/Header";
@@ -13,17 +13,30 @@ import style from "../style/pages/home.module.scss"
 
 export function Home() {
     const [ loginModalIsOpen, setLoginModalIsOpen ]  = useState(false)
+    
+    const { id } = useParams()
+    const { setNewFile, files } = useContext(FileContext)
+    const navigate = useNavigate()
+
 
     function handleToggleLoginModal() {
         setLoginModalIsOpen(!loginModalIsOpen)
     }
 
-    const { id } = useParams()
-    const { setNewFile } = useContext(FileContext)
-
     useEffect(() => {
         setNewFile(id)
     }, [id])
+
+    useEffect(() => {
+        console.log('loop')
+        const lastFile = files[files.length - 1]
+        if(lastFile) {
+            navigate(lastFile.id, { replace: true });
+        } else {
+            navigate('/', { replace: true });
+        }
+    }, [files])
+
 
     return (
         <>

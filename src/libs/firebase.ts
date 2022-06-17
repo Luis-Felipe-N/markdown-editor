@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth'
 import { getDatabase } from 'firebase/database'
 
 // Your web app's Firebase configuration
@@ -23,6 +23,7 @@ export {
     auth,
     provider,
     signInWithPopup,
+    signOut,
 
     db
 }

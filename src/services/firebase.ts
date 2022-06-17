@@ -1,30 +1,31 @@
 // Nome, data de criação, usuário que quer criar
 import { v4 as uuidV4 }  from 'uuid'
-import { onValue, push, ref, set, update } from "firebase/database"
+import { onValue, push, ref, set, update, remove } from "firebase/database"
 import { db } from "../libs/firebase"
+import { IFile } from '../types/File';
 
-
-interface iCreateDoc {
+interface ISaveDocChanges {
+    fileId: string,
     userId: string,
+    file: IFile
 }
 
-interface IFile {
-    name: string,
-    content: string,
-    created_at: Date,
-    id: string
-}
-
-export function createDoc(userId: string): void {
+export function createDoc(userId: string): IFile {
     let date = new Date()
-    const docListref = ref(db, userId + '/files')
-    const docFilesRef = push(docListref)
-    set(docFilesRef, {
-        name: 'sem_nome',
+    const fileId = uuidV4()
+    const docListref = ref(db, userId + '/files/' + fileId  )
+    
+    const file = {
+        name: 'sem_nome.md',
         created_at: date.toString(),
         content: '',
-        create_by: userId
-    })
+        created_by: userId,
+        id: fileId
+    }
+
+    set(docListref, file).then(value => console.log(value))
+
+    return file
 }
 
 export function getAllFiles(userId: string, setFiles: any) {
@@ -35,37 +36,36 @@ export function getAllFiles(userId: string, setFiles: any) {
         const data: IFile[] = snapshot.val()
         
         const files = Object.entries(
-            data || {}).map( ([key, { name, created_at, content } ]) => {
+            data || {}).map( ([key, { name, created_at, content, created_by } ]) => {
                 return {
                         id: key,
                         name,
                         created_at,
-                        content
+                        content,
+                        created_by
                 }
             }
         )
 
-        console.log(files)
+        files.sort(function(old, current) {
+            const oldDate = old.created_at.toString()
+            const currentDate = current.created_at.toString()
+
+            return Date.parse(oldDate) - Date.parse(currentDate)
+        })
 
         setFiles(files)
     })
 }
 
-interface ISaveDocChanges {
-    fileId: string,
-    userId: string,
-    file: IFile
-}
-
 export function saveDocChanges({file, fileId, userId}: ISaveDocChanges) {
-    console.log(file)
     const filesRef = ref(db, userId + '/files/' + fileId)
     update(filesRef, file)
 }
 
-// user
-function getDocByUser() {
-    
+export function deleteDoc(fileId: string, userId: string): void {
+    const docRef = ref(db, userId + '/files/' + fileId)
+    remove(docRef).then(() => {
+        console.log('doc deletado')
+    })
 }
-
-export {}

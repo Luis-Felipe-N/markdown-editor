@@ -13,6 +13,8 @@ export function Preview() {
         if(file?.content) {
             const tempHtmlPreview = markdown(file.content)
             setHtmlPreview(tempHtmlPreview)
+        } else {
+            setHtmlPreview('')
         }
     }, [file?.content])
 

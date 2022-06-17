@@ -18,11 +18,13 @@ export function LoginModal({ isOpen, onRequestClose}: ILoginProps) {
         e.preventDefault()
 
         createUserLocal(username, avatar)
+
         onRequestClose()
     }
 
     function handleLoginGoogle() {
         signIn()
+        onRequestClose()
     }
 
     function hangleChangeUserName(text: string) {
@@ -33,6 +35,7 @@ export function LoginModal({ isOpen, onRequestClose}: ILoginProps) {
         setAvatar(text)
     }
 
+    ReactModal.setAppElement('#root')
 
     return (
         <ReactModal

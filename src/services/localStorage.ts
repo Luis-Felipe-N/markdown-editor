@@ -1,56 +1,78 @@
+import { useContext } from 'react';
 import { v4 as uuidV4} from 'uuid'
+import { FileContext } from '../context/FileContext';
+import { IFile } from '../types/File';
 
-interface IFile {
-    name: string,
-    content: string,
-    created_at: string,
-    id: string,
-    create_by: string
-
+export function checkToHaveFilesLocal(): boolean {
+    const files = localStorage.getItem('files')
+    
+    if (files!==null) {
+        return true
+    } else {
+        return false
+    }
 }
 
-export function createDocLocal(userId: string): void {
+export function createDocLocal(userId: string, fileWelcome?: IFile): IFile {
     const date = new Date()
-    const file: IFile = {
-        id: uuidV4(),
-        name: 'sem_nome',
-        created_at: date.toString(),
-        content: '',
-        create_by: userId
+
+    let file: IFile;
+    if (fileWelcome) {
+        file = fileWelcome
+    } else {
+        file = {
+            id: uuidV4(),
+            name: 'sem_nome.md',
+            created_at: date.toString(),
+            content: '',
+            created_by: userId
+        }
     }
 
     const files = localStorage.getItem('files')
     
     if (files!==null) {
-        const parseFile: IFile[] = JSON.parse(files)
-        const tempFiles = [...Array.from(parseFile), file]
+        const parseFiles: IFile[] = JSON.parse(files)
+        const tempFiles = [...Array.from(parseFiles), file]
         localStorage.setItem('files', JSON.stringify(tempFiles))
     } else {
         const files: IFile[] = []
         files.push(file)
         localStorage.setItem('files', JSON.stringify(files))
     }
+
+    return file
 }
 
-export function getAllFiles(userId: string, setFiles: any) {
+export function getAllFilesLocal(setFiles: any) {
     const files = localStorage.getItem('files')
+
+    if (files!==null) {
+        const parseFiles: IFile[] = JSON.parse(files)
+        setFiles(parseFiles)
+    }
+
+    console.log('chamou')
 }
 
-interface ISaveDocChanges {
-    fileId: string,
-    userId: string,
-    file: IFile
+
+interface ISaveDocChangesLocal {
+    fileId: string;
+    ChangedFile: IFile;
 }
 
-// export function saveDocChanges({file, fileId, userId}: ISaveDocChanges) {
-//     console.log(file)
-//     const filesRef = ref(db, userId + '/files/' + fileId)
-//     update(filesRef, file)
-// }
+export function saveDocChangesLocal({fileId, ChangedFile}: ISaveDocChangesLocal){
+    const files = localStorage.getItem('files')
 
-// user
-function getDocByUser() {
-    
+    if (files!==null) {
+        const parseFiles: IFile[] = JSON.parse(files)
+        parseFiles.map((file) => {
+            if (file.id = fileId) {
+                return ChangedFile
+            }
+        })
+
+        localStorage.setItem('files', JSON.stringify(parseFiles))
+    }
 }
 
-export {}

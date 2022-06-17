@@ -1,5 +1,8 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { getAllFiles, saveDocChanges } from "../services/firebase";
+import { getAllFilesLocal, saveDocChangesLocal } from "../services/localStorage";
+import { IFile } from "../types/File";
 import { AuthContext } from "./AuthContext";
 
 const welcomeFile: IFile = {
@@ -32,26 +35,22 @@ You can see examples of ordered and unordered lists above.
     `,
     name: 'welcome.md',
     created_at: new Date(),
-    id: ''
+    id: '',
+    created_by: ''
 }
 
 interface IFileContextProviderProps {
     children?: ReactNode | undefined;
 }
 
-interface IFile {
-    name: string,
-    content: string,
-    created_at: Date,
-    id: string
-}
-
 interface IFileContext {
-    file: IFile,
-    files: IFile[],
-    setNewFile: (fileId: string | undefined) => void,
-    saveChange: (fileId: string) => void 
-    changeContentFile: (prop: any) => void,
+    file: IFile;
+    files: IFile[];
+    setFiles:  React.Dispatch<React.SetStateAction<IFile[]>>;
+    setNewFile: (fileId: string | undefined) => void;
+    saveChange: (fileId: string) => void;
+    changeContentFile: (prop: any) => void;
+    deleteDoc: (fileId: string) => void;
 }
 
 export const FileContext = createContext({} as IFileContext)
@@ -60,12 +59,19 @@ export function FileContextProvider(props: IFileContextProviderProps) {
     const [ file, setFile ] = useState<IFile>(welcomeFile)
     const [ files, setFiles ] = useState<IFile[]>([])
 
-    const { user, signIn } = useContext(AuthContext)
+    const { user } = useContext(AuthContext)
 
     useEffect(() => { 
         if (user) {
-            const userId = user.uid 
-            getAllFiles(userId, setFiles) 
+            const userId = user.uid
+
+            if (!user.isUserLocal) {
+                getAllFiles(userId, setFiles) 
+            } else {
+                getAllFilesLocal(setFiles)
+                window.addEventListener('storage', () => getAllFilesLocal(setFiles))
+            }
+            
         } else {
             setFiles([file])
         }
@@ -81,27 +87,38 @@ export function FileContextProvider(props: IFileContextProviderProps) {
         if (fileId) {
             const fileFilted = files.filter(file => file.id === fileId)[0]
             setFile(fileFilted)
-        } else if(files.length > 1 ){
-            const fisrtFile: IFile = files[0]
-            setFile(fisrtFile)
-
         } else {
             setFile(welcomeFile)
         }
     }
 
     function saveChange(fileId: string) {
-        console.log('salvando')
         if (user) {
             const userId = user.uid 
-            saveDocChanges({file, fileId, userId})
-        } else {
-            signIn()
+            if (!user.isUserLocal) {
+                saveDocChanges({file, fileId, userId})
+            } else {
+                console.log('salvando no local storage')
+                saveDocChangesLocal({fileId, file})
+            }
         }
     }
 
+    function deleteDoc(fileId: string) {
+
+    }
+
     return (
-        <FileContext.Provider value={{file, files, setNewFile, saveChange, changeContentFile}}>
+        <FileContext.Provider value={
+            {
+                file, 
+                files, 
+                setFiles, 
+                setNewFile, 
+                saveChange, 
+                deleteDoc, 
+                changeContentFile}
+        }>
             {props.children}
         </FileContext.Provider>
     )

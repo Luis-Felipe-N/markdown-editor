@@ -7,40 +7,38 @@ import { FileContext } from "../../context/FileContext";
 import style from "./style.module.scss";
 
 interface IHeaderProps {
-  onToggleLoginMenu: () => void,
-  redirectToFile: (position?: string) => void
+  onToggleLoginMenu: () => void;
+  redirectToFile: (position?: string) => void;
 }
 
 export function Header({ onToggleLoginMenu, redirectToFile }: IHeaderProps) {
-  const [ dropDownIsOpen, setDropDownIsOpen ] = useState(false)
+  const [dropDownIsOpen, setDropDownIsOpen] = useState(false);
 
   const { user, logOut } = useContext(AuthContext);
-  const { file, saveChange, deleteCurrentDoc, changeContentFile } = useContext(FileContext);
+  const { file, saveChange, deleteCurrentDoc, changeContentFile } =
+    useContext(FileContext);
   const { fileId } = useParams();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   function handleChangedocumentName(text: string) {
     changeContentFile({ name: text });
   }
 
   function addDotMDInFileName() {
-    const text = file.name
-    const haveDotMD = text.endsWith('.md')
+    const text = file.name;
+    const haveDotMD = text.endsWith(".md");
     if (!haveDotMD) {
-      const textWithDotMD = text + '.md'
+      const textWithDotMD = text + ".md";
       changeContentFile({ name: textWithDotMD });
     }
   }
 
   function handleSaveChanges() {
     if (user) {
-      addDotMDInFileName()
+      addDotMDInFileName();
 
       if (fileId !== undefined) {
-        const response = saveChange(fileId);
-        if (response?.sucess === true) {
-          navigate(fileId, { replace: true });
-        }
+        saveChange(fileId);
       }
     } else {
       onToggleLoginMenu();
@@ -49,18 +47,19 @@ export function Header({ onToggleLoginMenu, redirectToFile }: IHeaderProps) {
 
   function handleLogout() {
     logOut();
-    redirectToFile()
+    redirectToFile();
   }
 
   function handleDeleteFile() {
     if (fileId) {
-      deleteCurrentDoc(fileId)
-      redirectToFile('init')
+      const sucess = deleteCurrentDoc(fileId);
     }
+    redirectToFile("init");
+    
   }
 
   function handleToggleDropdown() {
-    setDropDownIsOpen(!dropDownIsOpen)
+    setDropDownIsOpen(!dropDownIsOpen);
   }
 
   return (
@@ -107,25 +106,43 @@ export function Header({ onToggleLoginMenu, redirectToFile }: IHeaderProps) {
                 />
                 <h3>{user.name}</h3>
               </button>
-              <div className={
-                dropDownIsOpen ? `${style.dropdownUser} ${style.active}` : style.dropdownUser
-                }>
+              <div
+                className={
+                  dropDownIsOpen
+                    ? `${style.dropdownUser} ${style.active}`
+                    : style.dropdownUser
+                }
+              >
                 <ul>
                   <li>
                     <span>{user.name}</span>
                   </li>
                   <li>
                     <button onClick={handleLogout}>
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.51428 20H4.51428C3.40971 20 2.51428 19.1046 2.51428 18V6C2.51428 4.89543 3.40971 4 4.51428 4H8.51428V6H4.51428V18H8.51428V20Z" fill="currentColor" /><path d="M13.8418 17.385L15.262 15.9768L11.3428 12.0242L20.4857 12.0242C21.038 12.0242 21.4857 11.5765 21.4857 11.0242C21.4857 10.4719 21.038 10.0242 20.4857 10.0242L11.3236 10.0242L15.304 6.0774L13.8958 4.6572L7.5049 10.9941L13.8418 17.385Z" fill="currentColor" /></svg>
-                      Sair</button>
+                      <svg
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M8.51428 20H4.51428C3.40971 20 2.51428 19.1046 2.51428 18V6C2.51428 4.89543 3.40971 4 4.51428 4H8.51428V6H4.51428V18H8.51428V20Z"
+                          fill="currentColor"
+                        />
+                        <path
+                          d="M13.8418 17.385L15.262 15.9768L11.3428 12.0242L20.4857 12.0242C21.038 12.0242 21.4857 11.5765 21.4857 11.0242C21.4857 10.4719 21.038 10.0242 20.4857 10.0242L11.3236 10.0242L15.304 6.0774L13.8958 4.6572L7.5049 10.9941L13.8418 17.385Z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      Sair
+                    </button>
                   </li>
                 </ul>
               </div>
             </div>
           )}
-          <button
-            onClick={handleDeleteFile}
-          >
+          <button onClick={handleDeleteFile}>
             <svg
               width="24"
               height="24"

@@ -2,11 +2,13 @@
 
 .home {
     display: flex;
+    overflow-y: hidden !important;
 
     main {
         flex: 1;
-
+        
         .wrapper {
+            display: flex;
             .btnToggleView {
                 @include btn;
                 position: absolute;
@@ -15,7 +17,6 @@
                 background-color: transparent;
                 display: none;
             }
-            display: flex;
         }
     }
 }

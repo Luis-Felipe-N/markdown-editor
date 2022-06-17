@@ -48,7 +48,7 @@ interface IFileContext {
     setFiles:  React.Dispatch<React.SetStateAction<IFile[]>>,
     setNewFile: (fileId: string | undefined) => void,
     createNewDoc: () => void;
-    saveChange: (fileId: string) => {sucess: boolean;} | undefined,
+    saveChange: (fileId: string) => void,
     changeContentFile: (prop: any) => void,
     deleteCurrentDoc: (fileId: string) => void,
 }
@@ -106,20 +106,14 @@ export function FileContextProvider(props: IFileContextProviderProps) {
         }
     }
 
-    function saveChange(fileId: string): {sucess: boolean;} | undefined {
+    function saveChange(fileId: string): void {
         if (user) {
             const userId = user.uid 
-            try {
-                if (!user.isUserLocal) {
-                    saveDocChanges({file, fileId, userId})
-                } else {
-                    console.log('salvando no local storage')
-                    saveDocChangesLocal({fileId, file})
-                }
-
-                return {sucess: true}
-            } catch (error) {
-                return {sucess: false}
+            if (!user.isUserLocal) {
+                saveDocChanges({file, fileId, userId})
+            } else {
+                console.log('salvando no local storage')
+                saveDocChangesLocal({fileId, file})
             }
         }
     }

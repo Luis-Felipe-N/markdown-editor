@@ -79,7 +79,6 @@
                 display: block;
                 padding: .5rem .5rem 1rem;
                 width: 20rem;
-                // width: 100%;
                 position: absolute;
                 top: 4rem;
                 right: 0;
@@ -135,6 +134,7 @@
 @media (max-width: 1000px) {
     .header {
         .btns {
+            gap: .5rem;
             button span,button h3{
                 display: none;
             }
@@ -142,6 +142,20 @@
 
         .title {
             display: none;
+        }
+
+        .documentName {
+            p {
+                display: none;
+            }
+            input {
+                max-width: 100px;
+            }
+        }
+
+        .user {
+            margin: 0;
+            padding: 0 !important;
         }
     }
 }

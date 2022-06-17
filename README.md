@@ -1,6 +1,6 @@
 # Jokepô
 
-Projeto de um editor markdown, inspirado em outros editores, fiz minha própria versão onde possível criar e armazenar vários arquivos.md.
+Projeto de um editor markdown, inspirado em outros editore onde possível criar e armazenar vários arquivos.md.
 
 
 #### ✔️ 🚀 Concluido  ✔️

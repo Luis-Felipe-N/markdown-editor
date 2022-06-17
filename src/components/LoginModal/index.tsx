@@ -1,6 +1,6 @@
 import ReactModal from 'react-modal'
 import style from "./style.module.scss";
-import { useContext, useState } from 'react';
+import { FormEvent, useContext, useState } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 
 interface ILoginProps {
@@ -14,7 +14,7 @@ export function LoginModal({ isOpen, onRequestClose}: ILoginProps) {
 
     const { createUserLocal, signIn } = useContext(AuthContext);
 
-    function handleCreateLocalUser(e: Event) {
+    function handleCreateLocalUser(e: FormEvent) {
         e.preventDefault()
 
         createUserLocal(username, avatar)

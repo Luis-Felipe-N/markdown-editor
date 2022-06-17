@@ -78,7 +78,8 @@
             .dropdownUser.active {
                 display: block;
                 padding: .5rem .5rem 1rem;
-                width: 20rem;
+                max-width: 10rem;
+                width: 100%;
                 position: absolute;
                 top: 4rem;
                 right: 0;

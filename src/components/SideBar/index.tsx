@@ -10,10 +10,11 @@ import { formatDate } from '../../utils/formatDate'
 import style from './style.module.scss'
 
 interface ISideBarrops {
-    onToggleLoginMenu: () => void;
+    onToggleLoginMenu: () => void,
+    redirectToFile: (position?: string) => void
 }  
 
-export function SideBar({ onToggleLoginMenu }: ISideBarrops) {
+export function SideBar({ onToggleLoginMenu, redirectToFile }: ISideBarrops) {
     const [ sideBarIsClose, setSideBarIsClose ] = useState(false)
 
     const navigate = useNavigate()
@@ -25,12 +26,13 @@ export function SideBar({ onToggleLoginMenu }: ISideBarrops) {
         setSideBarIsClose( currentState => !currentState)
     }
 
-    function handleCreateNewDoc() {
+    async function handleCreateNewDoc() {
         if (user) {
             createNewDoc()
         } else {
             onToggleLoginMenu()
         }
+        redirectToFile('end')
     }
 
     return (

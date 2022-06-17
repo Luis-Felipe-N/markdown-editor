@@ -1,15 +1,17 @@
 import { useContext, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+
 import { AuthContext } from "../../context/AuthContext";
 import { FileContext } from "../../context/FileContext";
-import { deleteDoc } from "../../services/firebase";
+
 import style from "./style.module.scss";
 
 interface IHeaderProps {
-  onToggleLoginMenu: () => void;
+  onToggleLoginMenu: () => void,
+  redirectToFile: (position?: string) => void
 }
 
-export function Header({ onToggleLoginMenu }: IHeaderProps) {
+export function Header({ onToggleLoginMenu, redirectToFile }: IHeaderProps) {
   const [ dropDownIsOpen, setDropDownIsOpen ] = useState(false)
 
   const { user, logOut } = useContext(AuthContext);
@@ -33,9 +35,12 @@ export function Header({ onToggleLoginMenu }: IHeaderProps) {
   function handleSaveChanges() {
     if (user) {
       addDotMDInFileName()
+
       if (fileId !== undefined) {
-        saveChange(fileId);
-        navigate(fileId, { replace: true });
+        const response = saveChange(fileId);
+        if (response?.sucess === true) {
+          navigate(fileId, { replace: true });
+        }
       }
     } else {
       onToggleLoginMenu();
@@ -44,11 +49,13 @@ export function Header({ onToggleLoginMenu }: IHeaderProps) {
 
   function handleLogout() {
     logOut();
+    redirectToFile()
   }
 
   function handleDeleteFile() {
     if (fileId) {
       deleteCurrentDoc(fileId)
+      redirectToFile('init')
     }
   }
 

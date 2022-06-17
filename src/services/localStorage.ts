@@ -1,6 +1,4 @@
-import { useContext } from 'react';
 import { v4 as uuidV4} from 'uuid'
-import { FileContext } from '../context/FileContext';
 import { IFile } from '../types/File';
 
 export function checkToHaveFilesLocal(): boolean {
@@ -11,6 +9,11 @@ export function checkToHaveFilesLocal(): boolean {
     } else {
         return false
     }
+}
+
+function dispatchEventFilesChanged() {
+    const event = new Event('storage')
+    window.dispatchEvent(event)
 }
 
 export function createDocLocal(userId: string, fileWelcome?: IFile): IFile {
@@ -68,8 +71,7 @@ export function saveDocChangesLocal({fileId, file}: ISaveDocChangesLocal){
         const parseFiles: IFile[] = JSON.parse(files)
         const changedFiles = parseFiles.map((fileM) => fileM.id === fileId ? file : fileM)
         localStorage.setItem('files', JSON.stringify(changedFiles))
-        const event = new Event('storage')
-        window.dispatchEvent(event)
+        dispatchEventFilesChanged()
     }
 }
 
@@ -78,9 +80,8 @@ export function deleteDocLocal(fileId: string) {
 
     if (files!==null) {
         const parseFiles: IFile[] = JSON.parse(files)
-        const fileIndex = parseFiles.findIndex(file => file.id === fileId)
-        parseFiles.slice(fileIndex)
-        console.log(parseFiles)
-        localStorage.setItem('files', JSON.stringify(parseFiles))
+        const remaningFiles = parseFiles.filter(file => file.id !== fileId)
+        localStorage.setItem('files', JSON.stringify(remaningFiles))
+        dispatchEventFilesChanged()
     }
 }

@@ -48,7 +48,7 @@ interface IFileContext {
     setFiles:  React.Dispatch<React.SetStateAction<IFile[]>>,
     setNewFile: (fileId: string | undefined) => void,
     createNewDoc: () => void;
-    saveChange: (fileId: string) => void,
+    saveChange: (fileId: string) => {sucess: boolean;} | undefined,
     changeContentFile: (prop: any) => void,
     deleteCurrentDoc: (fileId: string) => void,
 }
@@ -96,25 +96,30 @@ export function FileContextProvider(props: IFileContextProviderProps) {
 
     function createNewDoc() {
         if( user ) {
-        if (!user.isUserLocal) {    
-            createDoc(user.uid)
-            
-        } else {
-            const event = new Event('storage')
-            createDocLocal(user.uid)
-            window.dispatchEvent(event)
-        }
+            if (!user.isUserLocal) {    
+                createDoc(user.uid)
+            } else {
+                const event = new Event('storage')
+                createDocLocal(user.uid)
+                window.dispatchEvent(event)
+            }
         }
     }
 
-    function saveChange(fileId: string) {
+    function saveChange(fileId: string): {sucess: boolean;} | undefined {
         if (user) {
             const userId = user.uid 
-            if (!user.isUserLocal) {
-                saveDocChanges({file, fileId, userId})
-            } else {
-                console.log('salvando no local storage')
-                saveDocChangesLocal({fileId, file})
+            try {
+                if (!user.isUserLocal) {
+                    saveDocChanges({file, fileId, userId})
+                } else {
+                    console.log('salvando no local storage')
+                    saveDocChangesLocal({fileId, file})
+                }
+
+                return {sucess: true}
+            } catch (error) {
+                return {sucess: false}
             }
         }
     }

@@ -19,32 +19,52 @@ export function Home() {
     const { setNewFile, files } = useContext(FileContext)
     const navigate = useNavigate()
 
-
-    function handleToggleLoginModal() {
-        setLoginModalIsOpen(!loginModalIsOpen)
-    }
-
     useEffect(() => {
         setNewFile(fileId)
     }, [fileId])
 
     useEffect(() => {
-        const lastFile = files[files.length - 1]
-        console.log(lastFile)
-        if(lastFile) {
-            navigate(lastFile.id, { replace: true });
-        } else {
-            navigate('/', { replace: true });
-        }
-    }, [files])
+        redirectToFile('init')
+    }, [])
 
+    function handleToggleLoginModal() {
+        setLoginModalIsOpen(!loginModalIsOpen)
+    }
+
+    function redirectToFile(position?: string) {
+
+        function redirect(fileId?: string) {
+            if(fileId) {
+                navigate(fileId, { replace: true });
+            } else {
+                navigate('/', { replace: true });
+            }
+        }
+
+        if (position==='end') {
+            const lastFile = files[files.length - 1]
+            redirect(lastFile?.id)
+            
+        } else if (position==='init') {
+            const fisrtFile = files[0]
+            redirect(fisrtFile?.id)
+        } else {
+            redirect()
+        }
+    }
 
     return (
         <>
         <div className={style.home}>
-            <SideBar onToggleLoginMenu={handleToggleLoginModal} />
+            <SideBar 
+                onToggleLoginMenu={handleToggleLoginModal}
+                redirectToFile={redirectToFile}
+            />
             <main>
-                <Header onToggleLoginMenu={handleToggleLoginModal} />
+                <Header 
+                    onToggleLoginMenu={handleToggleLoginModal}
+                    redirectToFile={redirectToFile}
+                />
                 <div className={previewIsOpen ? `${style.wrapper} ${style.previewOpen}` : style.wrapper}>
                     <button
                         className={style.btnToggleView}

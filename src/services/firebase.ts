@@ -23,7 +23,7 @@ export function createDoc(userId: string): IFile {
         id: fileId
     }
 
-    set(docListref, file).then(value => console.log(value))
+    set(docListref, file)
 
     return file
 }

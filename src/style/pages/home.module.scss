@@ -9,6 +9,7 @@
         
         .wrapper {
             display: flex;
+
             .btnToggleView {
                 @include btn;
                 position: absolute;
@@ -16,6 +17,10 @@
                 padding: 0.5rem 1rem;
                 background-color: transparent;
                 display: none;
+            }
+
+            > div:not(:last-child){
+                flex: 1;
             }
         }
     }
@@ -26,14 +31,16 @@
         .btnToggleView {
             display: block !important;
         }
+    }
 
-        &.previewOpen {
-            section:first-child {
-                display: none !important;
-            }
-            section:last-child {
-                display: block;
-            }
+    .wrapper.previewOpen {
+        > div:not(:last-child) {
+            display: none !important;
+        }
+        section:last-child {
+            display: block;
+            border: 0;
         }
     }
+    
 }

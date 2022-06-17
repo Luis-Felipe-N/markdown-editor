@@ -4,12 +4,12 @@ import { getDatabase } from 'firebase/database'
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyBReLGlZGxK_Jv0ePxwNjB-kZqKi11SNY8",
-  authDomain: "editor-markdown-643eb.firebaseapp.com",
-  projectId: "editor-markdown-643eb",
-  storageBucket: "editor-markdown-643eb.appspot.com",
-  messagingSenderId: "794567571413",
-  appId: "1:794567571413:web:0a5f2506162c48bb236f5c"
+  apiKey: process.env.REACT_APP_API_KEY,
+  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_MESSAGIN_SENDER_ID,
+  appId: process.env.REACT_APP_APP_ID
 };
 
 

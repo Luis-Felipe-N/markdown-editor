@@ -1,4 +1,4 @@
-# Jokepô
+# Editor Markdown
 
 Projeto de um editor markdown, inspirado em outros editore onde possível criar e armazenar vários arquivos.md.
 
